@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>행신중학교 - AI기반 서·논술형 평가 연구학교, 그 기록</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap');
+        body { font-family: 'Pretendard', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <header class="bg-gradient-to-r from-indigo-900 to-slate-950 text-white py-20 px-6 text-center shadow-md">
+        <div class="max-w-4xl mx-auto">
+            <span class="bg-indigo-500/30 text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Haengshin Middle School Archive</span>
+            <p class="text-sm md:text-base font-semibold text-indigo-400 mt-4 mb-1">행신중학교</p>
+            <h1 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+                AI기반 서·논술형 평가 연구학교, 그 기록
+            </h1>
+            <p class="text-slate-300 text-sm md:text-base max-w-xl mx-auto font-light">
+                AI 기술을 활용한 평가 혁신과 교실의 변화,<br>
+                교사와 학생이 함께 성장한 교육 활동의 기록 보관소입니다.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-16 flex-grow flex items-center justify-center w-full">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
+            
+            <div onclick="navigateTo('onboarding')" class="cursor-pointer bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 text-center group flex flex-col justify-center min-h-[220px]">
+                <div class="w-14 h-14 mx-auto mb-5 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                    <i class="fa-solid fa-rocket text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-base text-slate-900 break-keep leading-snug px-2">3-STEP 사전 온보딩 활동</h3>
+                <p class="text-xs text-slate-400 mt-3 group-hover:text-indigo-500 transition-colors">기록 확인하기 <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></p>
+            </div>
+
+            <div onclick="navigateTo('training')" class="cursor-pointer bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 text-center group flex flex-col justify-center min-h-[220px]">
+                <div class="w-14 h-14 mx-auto mb-5 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                    <i class="fa-solid fa-chalkboard-user text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-base text-slate-900 break-keep leading-snug px-2">교원 역량 강화</h3>
+                <p class="text-xs text-slate-400 mt-3 group-hover:text-emerald-500 transition-colors">기록 확인하기 <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></p>
+            </div>
+
+            <div onclick="navigateTo('writing')" class="cursor-pointer bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 text-center group flex flex-col justify-center min-h-[220px]">
+                <div class="w-14 h-14 mx-auto mb-5 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                    <i class="fa-solid fa-pen-fancy text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-base text-slate-900 break-keep leading-snug px-2">교과별 성장글쓰기</h3>
+                <p class="text-xs text-slate-400 mt-3 group-hover:text-amber-500 transition-colors">기록 확인하기 <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></p>
+            </div>
+
+            <div onclick="navigateTo('project')" class="cursor-pointer bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 text-center group flex flex-col justify-center min-h-[220px]">
+                <div class="w-14 h-14 mx-auto mb-5 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center group-hover:bg-sky-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                    <i class="fa-solid fa-diagram-project text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-base text-slate-900 break-keep leading-snug px-2">1문항 다교과 융합 프로젝트</h3>
+                <p class="text-xs text-slate-400 mt-3 group-hover:text-sky-500 transition-colors">기록 확인하기 <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></p>
+            </div>
+
+            <div onclick="navigateTo('openclass')" class="cursor-pointer bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 text-center group flex flex-col justify-center min-h-[220px]">
+                <div class="w-14 h-14 mx-auto mb-5 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center group-hover:bg-rose-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                    <i class="fa-solid fa-eye text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-base text-slate-900 break-keep leading-snug px-2">수업공개의 날</h3>
+                <p class="text-xs text-slate-400 mt-3 group-hover:text-rose-500 transition-colors">기록 확인하기 <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-400">
+        © 2026 행신중학교 AI기반 서·논술형 평가 연구학교 Archive. All Rights Reserved.
+    </footer>
+
+    <script>
+        function navigateTo(category) {
+            window.location.href = `detail.html?category=${category}`;
+        }
+    </script>
+</body>
+</html>
