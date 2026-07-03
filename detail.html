@@ -13,7 +13,6 @@
 </head>
 <body class="bg-slate-900 text-slate-100 h-screen flex flex-col overflow-hidden">
 
-    <!-- 상단 내비게이션 바 -->
     <header class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center shrink-0">
         <div class="flex items-center gap-4">
             <a href="index.html" class="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-1">
@@ -23,119 +22,116 @@
             <span class="text-xs bg-slate-800 text-slate-300 font-medium px-2 py-0.5 rounded">행신중학교</span>
             <h1 id="pageTitle" class="text-lg font-bold text-white tracking-tight">연구학교 기록물</h1>
         </div>
-        <div class="text-xs text-slate-500 font-mono" id="folderPathDisplay">images/</div>
+        <div class="text-xs text-slate-400 font-mono bg-slate-900 px-3 py-1 rounded border border-slate-800" id="folderPathDisplay">Loading...</div>
     </header>
 
-    <!-- 메인 작업 영역 -->
     <div class="flex flex-1 overflow-hidden">
         
-        <!-- [왼쪽] 폴더 및 파일 탐색기 영역 -->
         <aside class="w-80 bg-slate-950/50 border-r border-slate-800 flex flex-col overflow-y-auto shrink-0">
-            <div class="p-4 border-b border-slate-800/60 bg-slate-950/30">
+            <div class="p-4 border-b border-slate-800/60 bg-slate-950/30 flex justify-between items-center">
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
                     <i class="fa-solid fa-folder-open text-amber-500"></i> 디렉토리 탐색기
                 </p>
-            </div>
-            <!-- 로딩 표시기 -->
-            <div id="treeLoading" class="p-4 text-xs text-slate-500 flex items-center gap-2">
-                <i class="fa-solid fa-circle-notch animate-spin text-indigo-500"></i> GitHub에서 이미지 목록을 불러오는 중...
-            </div>
-            <!-- 파일 구조 트리 -->
-            <div class="p-4 space-y-1 text-sm select-none hidden" id="fileTree"></div>
-        </aside>
-
-        <!-- [오른쪽] 이미지 뷰어 영역 -->
-        <main class="flex-1 bg-slate-900 flex flex-col items-center justify-center p-8 relative overflow-auto">
-            <div id="noSelectMessage" class="text-slate-500 text-center">
-                <i class="fa-regular fa-image text-5xl mb-3 block text-slate-600"></i>
-                <p class="text-sm">왼쪽 탐색기에서 확인하실 이미지 파일을 선택해 주세요.</p>
+                <button id="upFolderBtn" onclick="navigateUp()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i> 상위로
+                </button>
             </div>
             
-            <!-- 이미지 표시 공간 -->
-            <div id="viewerContainer" class="hidden text-center max-w-full max-h-full flex flex-col items-center justify-center">
-                <p class="text-xs text-slate-400 mb-2"><i class="fa-solid fa-magnifying-glass-plus"></i> 이미지를 클릭하면 전체 화면(새 창)으로 크게 볼 수 있습니다.</p>
-                <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-950 shadow-2xl cursor-zoom-in max-w-4xl">
-                    <img id="mainViewer" src="" alt="크게 보기" onclick="openFullImage()" class="max-w-full max-h-[70vh] object-contain hover:scale-[1.01] transition-transform duration-200">
+            <div id="treeLoading" class="p-4 text-xs text-slate-500 flex items-center gap-2">
+                <i class="fa-solid fa-circle-notch animate-spin text-indigo-500"></i> GitHub에서 데이터를 불러오는 중...
+            </div>
+            
+            <div class="p-2 space-y-0.5 text-sm select-none hidden" id="fileTree"></div>
+        </aside>
+
+        <main class="flex-1 bg-slate-900 flex flex-col items-center justify-center p-6 relative overflow-hidden">
+            <div id="noSelectMessage" class="text-slate-500 text-center">
+                <i class="fa-regular fa-folder-open text-5xl mb-3 block text-slate-600"></i>
+                <p class="text-sm">왼쪽 탐색기에서 확인하실 이미지나 PDF 파일을 선택해 주세요.</p>
+            </div>
+            
+            <div id="viewerContainer" class="hidden w-full h-full flex flex-col items-center justify-center">
+                <div class="w-full flex justify-between items-center mb-2 px-2 shrink-0">
+                    <h2 id="currentFileTitle" class="text-sm font-semibold text-slate-300 bg-slate-950/60 px-4 py-1 rounded border border-slate-800 truncate max-w-lg">파일명</h2>
+                    <p id="viewerHint" class="text-xs text-slate-400"><i class="fa-solid fa-magnifying-glass-plus"></i> 이미지를 클릭하면 전체 화면으로 볼 수 있습니다.</p>
                 </div>
-                <h2 id="currentImageTitle" class="text-sm font-semibold mt-4 text-slate-300 bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800">파일명.jpg</h2>
+                
+                <div class="w-full flex-1 border border-slate-800 rounded-xl overflow-hidden bg-slate-950 shadow-2xl flex items-center justify-center relative">
+                    <img id="imageViewer" src="" alt="이미지 보기" onclick="openFullImage()" class="hidden max-w-full max-h-[75vh] object-contain cursor-zoom-in hover:scale-[1.01] transition-transform duration-200">
+                    
+                    <iframe id="pdfViewer" src="" class="hidden w-full h-full border-0 bg-slate-800"></iframe>
+                </div>
             </div>
         </main>
 
     </div>
 
-    <!-- 푸터 -->
-    <footer class="border-t border-slate-950 bg-slate-950 py-3 text-center text-[10px] text-slate-600 shrink-0">
+    <footer class="border-t border-slate-950 bg-slate-950 py-2 text-center text-[10px] text-slate-600 shrink-0">
         © 2026 행신중학교 AI기반 서·논술형 평가 연구학교 Archive.
     </footer>
 
     <script>
-        // ⚙️ [필수 설정] 선생님의 GitHub 아이디와 레포지토리 이름을 입력하세요!
-        const GITHUB_USERNAME = 'jaealee-me'; // 예: 'haengshin-middle'
-        const GITHUB_REPO = 'hsms2026';     // 예: 'ai-archive'
+        // ⚙️ [필수 설정] 선생님의 GitHub 정보 입력
+        const GITHUB_USERNAME = 'jaealee-me'; 
+        const GITHUB_REPO = 'hsms2026';     
 
-        // 메뉴별 매핑 정보 (상위 디렉토리 접근이 원천 차단된 루트 엔드포인트 역할)
+        // 메뉴별 최초 진입 루트 경로 매핑 (이 경로의 윗단계는 절대 접근 불가)
         const CATEGORY_CONFIG = {
-            onboarding: {
-                title: '3-STEP 사전 온보딩 활동',
-                path: 'images/3-STEP 사전 온보딩 활동/'
-            },
-            training: {
-                title: '교원 역량 강화',
-                path: 'images/교사 역량 강화 연수/'
-            },
-            writing: {
-                title: '교과별 성장글쓰기',
-                path: 'images/교과별 성장글쓰기/'
-            },
-            project: {
-                title: '1문항 다교과 융합 프로젝트',
-                path: 'images/1문항 다교과 융합형 프로젝트/'
-            },
-            openclass: {
-                title: '수업공개의 날',
-                path: 'images/연구학교 수업공개의 날/'
-            }
+            onboarding: { title: '3-STEP 사전 온보딩 활동', rootPath: 'images/3-STEP 사전 온보딩 활동' },
+            training: { title: '교원 역량 강화', rootPath: 'images/교사 역량 강화 연수' },
+            writing: { title: '교과별 성장글쓰기', rootPath: 'images/교과별 성장글쓰기' },
+            project: { title: '1문항 다교과 융합 프로젝트', rootPath: 'images/1문항 다교과 융합형 프로젝트' },
+            openclass: { title: '수업공개의 날', rootPath: 'images/연구학교 수업공개의 날' }
         };
 
-        let currentSelectedImageUrl = '';
         const urlParams = new URLSearchParams(window.location.search);
         const currentCategory = urlParams.get('category') || 'onboarding';
         const config = CATEGORY_CONFIG[currentCategory];
 
-        // 기본 정보 렌더링
-        document.title = `[행신중] ${config.title} - 기록물 보관소`;
-        document.getElementById('pageTitle').innerText = config.title;
-        document.getElementById('folderPathDisplay').innerText = config.path + '/';
+        // 상태 관리 변수
+        const ROOT_PATH = config.rootPath; // 절대 넘지 못하는 최상위 한계선
+        let currentPath = config.rootPath; // 현재 탐색 중인 경로 위치
+        let currentSelectedFileUrl = '';
+        let currentSelectedFileType = '';
 
-        // GitHub API를 통해 해당 폴더 안의 실제 파일 정보 실시간 취득
-        async function fetchGitHubFiles() {
-            // 한글 폴더명을 URL 표준 포맷으로 인코딩
-            const encodedPath = encodeURIComponent(config.path);
+        // 초기 기본 텍스트 배치
+        document.title = `[행신중] ${config.title} - 아카이브`;
+        document.getElementById('pageTitle').innerText = config.title;
+
+        // GitHub API를 호출하여 현재 경로의 폴더 및 파일 리스트를 실시간 스캔
+        async function fetchDirectoryContents() {
+            document.getElementById('treeLoading').classList.remove('hidden');
+            document.getElementById('fileTree').classList.add('hidden');
+            document.getElementById('folderPathDisplay').innerText = currentPath;
+
+            // 상위 이동 버튼 활성화/비활성화 제어 (보안 경계선 작동)
+            const upBtn = document.getElementById('upFolderBtn');
+            if (currentPath === ROOT_PATH) {
+                upBtn.disabled = true; // 현재 위치가 지정된 최상위 폴더면 '상위로' 이동 차단
+            } else {
+                upBtn.disabled = false;
+            }
+
+            const encodedPath = encodeURIComponent(currentPath);
             const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${encodedPath}`;
 
             try {
                 const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error('파일을 가져오는데 실패했습니다. 경로를 확인해 주세요.');
-                
+                if (!response.ok) throw new Error('디렉토리를 읽어오지 못했습니다.');
                 const data = await response.json();
                 
-                // 폴더 내 파일 중 이미지 확장자(.jpg, .jpeg, .png, .gif, .webp)만 필터링
-                const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-                const imageFiles = data.filter(file => {
-                    if (file.type !== 'file') return false;
-                    const ext = file.name.split('.').pop().toLowerCase();
-                    return imageExtensions.includes(ext);
-                });
-
-                renderFileTree(imageFiles);
+                // 가독성을 위해 폴더가 먼저 나오고 파일이 나오도록 정렬
+                data.sort((a, b) => (b.type === 'dir') - (a.type === 'dir'));
+                
+                renderExplorer(data);
             } catch (error) {
                 console.error(error);
-                document.getElementById('treeLoading').innerHTML = `<span class="text-rose-400"><i class="fa-solid fa-circle-exclamation"></i> 오류: 데이터를 불러올 수 없습니다.</span>`;
+                document.getElementById('treeLoading').innerHTML = `<span class="text-rose-400 text-xs px-2"><i class="fa-solid fa-circle-exclamation"></i> 오류 발생</span>`;
             }
         }
 
-        // 받아온 실제 파일로 탐색기 트리 빌드
-        function renderFileTree(files) {
+        // 왼쪽 탐색기에 폴더 및 파일들을 배치하는 함수
+        function renderExplorer(items) {
             const loadingIndicator = document.getElementById('treeLoading');
             const treeContainer = document.getElementById('fileTree');
             
@@ -143,77 +139,127 @@
             treeContainer.classList.remove('hidden');
             treeContainer.innerHTML = '';
 
-            // [상위 디렉토리 제한 규정] 
-            // 최상위 노드를 지정된 path 하위로 고정하여 상위(`..`) 이동 버튼이나 구조를 원천적으로 배제함
-            const folderNode = document.createElement('div');
-            folderNode.className = "flex items-center gap-2 text-amber-400 font-semibold py-1.5 px-1";
-            folderNode.innerHTML = `<i class="fa-solid fa-folder-open text-base"></i> <span class="truncate">${config.path.split('/').pop()}</span>`;
-            treeContainer.appendChild(folderNode);
-
-            const fileListContainer = document.createElement('div');
-            fileListContainer.className = "pl-5 space-y-0.5 border-l border-slate-800 ml-2.5 mt-1";
-
-            if (files.length === 0) {
-                fileListContainer.innerHTML = `<div class="text-xs text-slate-500 py-2">폴더 내에 등록된 이미지 파일이 없습니다.</div>`;
-                treeContainer.appendChild(fileListContainer);
-                return;
-            }
-
-            files.forEach(file => {
-                const fileItem = document.createElement('div');
-                fileItem.className = "file-item flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/50 py-1.5 px-2 rounded cursor-pointer transition-colors break-all";
-                fileItem.innerHTML = `<i class="fa-regular fa-image text-indigo-400"></i> <span>${file.name}</span>`;
-                
-                // 파일 클릭 시 해당 이미지의 GitHub CDN 생주소(download_url) 주입
-                fileItem.onclick = function() {
-                    document.querySelectorAll('.file-item').forEach(el => el.classList.remove('bg-indigo-600/30', 'text-white', 'border-l-2', 'border-indigo-500'));
-                    fileItem.classList.add('bg-indigo-600/30', 'text-white', 'border-l-2', 'border-indigo-500');
-                    
-                    selectImage(file.download_url, file.name);
-                };
-
-                fileListContainer.appendChild(fileItem);
-            });
-            treeContainer.appendChild(fileListContainer);
-        }
-
-        // 우측 뷰어 렌더링
-        function selectImage(downloadUrl, fileName) {
-            document.getElementById('noSelectMessage').classList.add('hidden');
-            const viewerContainer = document.getElementById('viewerContainer');
-            viewerContainer.classList.remove('hidden');
-
-            const mainViewer = document.getElementById('mainViewer');
-            mainViewer.src = downloadUrl; // 샘플 제거 후 100% 실제 원본 이미지 주소 매칭
+            // 지원하는 미디어 파일 확장자 정의
+            const imgExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
             
-            currentSelectedImageUrl = downloadUrl;
-            document.getElementById('currentImageTitle').innerText = fileName;
+            items.forEach(item => {
+                const itemEl = document.createElement('div');
+                
+                if (item.type === 'dir') {
+                    // 📁 [폴더 노드 디자인] -> 클릭 시 하위 진입
+                    itemEl.className = "flex items-center gap-2 text-slate-300 hover:text-amber-400 hover:bg-slate-800/40 py-2 px-2.5 rounded cursor-pointer transition-colors font-medium";
+                    itemEl.innerHTML = `<i class="fa-solid fa-folder text-amber-500 shrink-0"></i> <span class="truncate">${item.name}</span>`;
+                    itemEl.onclick = () => {
+                        currentPath = item.path; // 경로 갱신 후 재스캔
+                        fetchDirectoryContents();
+                    };
+                } else {
+                    // 📄 [파일 노드 디자인]
+                    const ext = item.name.split('.').pop().toLowerCase();
+                    let icon = `<i class="fa-regular fa-file text-slate-500 shrink-0"></i>`;
+                    let isSupported = false;
+                    let type = '';
+
+                    if (imgExts.includes(ext)) {
+                        icon = `<i class="fa-regular fa-image text-indigo-400 shrink-0"></i>`;
+                        isSupported = true;
+                        type = 'image';
+                    } else if (ext === 'pdf') {
+                        icon = `<i class="fa-regular fa-file-pdf text-rose-400 shrink-0"></i>`;
+                        isSupported = true;
+                        type = 'pdf';
+                    }
+
+                    // 보여줄 수 없는 일반 포맷(hwp, docx 등)은 회색 처리
+                    if (!isSupported) {
+                        itemEl.className = "flex items-center gap-2 text-slate-600 py-2 px-2.5 text-xs opacity-60 cursor-not-allowed";
+                        itemEl.innerHTML = `${icon} <span class="truncate">${item.name} (미지원)</span>`;
+                    } else {
+                        itemEl.className = "file-item flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60 py-2 px-2.5 rounded cursor-pointer transition-colors break-all";
+                        itemEl.innerHTML = `${icon} <span class="truncate">${item.name}</span>`;
+                        itemEl.onclick = () => {
+                            document.querySelectorAll('.file-item').forEach(el => el.classList.remove('bg-indigo-600/30', 'text-white', 'border-l-2', 'border-indigo-500'));
+                            itemEl.classList.add('bg-indigo-600/30', 'text-white', 'border-l-2', 'border-indigo-500');
+                            
+                            displayContent(item.download_url, item.name, type);
+                        };
+                    }
+                }
+                treeContainer.appendChild(itemEl);
+            });
+
+            if (items.length === 0) {
+                treeContainer.innerHTML = `<div class="text-xs text-slate-500 p-4 text-center">폴더가 비어 있습니다.</div>`;
+            }
         }
 
-        // 이미지 클릭 시 별도 전체화면 창 활성화
+        // [상위 폴더 이동 기능] 보안 한계선 안에서만 작동하도록 파싱
+        function navigateUp() {
+            if (currentPath === ROOT_PATH) return; // 한계 도달 시 강제 무효화
+
+            const pathParts = currentPath.split('/');
+            pathParts.pop(); // 맨 마지막 폴더 경로 제거
+            currentPath = pathParts.join('/');
+            
+            fetchDirectoryContents();
+        }
+
+        // 우측 통합 멀티 뷰어 제어 로직 (이미지 및 PDF 지원)
+        function displayContent(downloadUrl, fileName, type) {
+            document.getElementById('noSelectMessage').classList.add('hidden');
+            document.getElementById('viewerContainer').classList.remove('hidden');
+            
+            document.getElementById('currentFileTitle').innerText = fileName;
+            
+            const imgViewer = document.getElementById('imageViewer');
+            const pdfViewer = document.getElementById('pdfViewer');
+            const hint = document.getElementById('viewerHint');
+
+            currentSelectedFileUrl = downloadUrl;
+            currentSelectedFileType = type;
+
+            if (type === 'image') {
+                pdfViewer.classList.add('hidden');
+                pdfViewer.src = "";
+                
+                imgViewer.classList.remove('hidden');
+                imgViewer.src = downloadUrl;
+                hint.classList.remove('invisible');
+            } else if (type === 'pdf') {
+                imgViewer.classList.add('hidden');
+                imgViewer.src = "";
+                
+                // 구글 PDF 뷰어 엔진 혹은 다이렉트 브라우저 임베딩 주소 연결
+                pdfViewer.classList.remove('hidden');
+                pdfViewer.src = downloadUrl; 
+                hint.classList.add('invisible'); // PDF는 내부 뷰어 툴바가 뜨므로 힌트 제거
+            }
+        }
+
+        // 파일 클릭 시 새 창 전체화면 팝업 처리
         function openFullImage() {
-            if (currentSelectedImageUrl) {
+            if (currentSelectedFileUrl && currentSelectedFileType === 'image') {
                 const newWindow = window.open("", "_blank");
                 newWindow.document.write(`
                     <html>
                     <head>
-                        <title>${document.getElementById('currentImageTitle').innerText} - 전체보기</title>
+                        <title>${document.getElementById('currentFileTitle').innerText} - 전체보기</title>
                         <style>
-                            body { margin: 0; background: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+                            body { margin: 0; background: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow:hidden; }
                             img { max-width: 100%; max-height: 100vh; object-fit: contain; cursor: zoom-out; }
                         </style>
                     </head>
                     <body>
-                        <img src="${currentSelectedImageUrl}" onclick="window.close()" title="클릭하시면 창이 닫힙니다.">
+                        <img src="${currentSelectedFileUrl}" onclick="window.close()" title="클릭하면 창이 닫힙니다.">
                     </body>
                     </html>
                 `);
             }
         }
 
-        // 로드 시 실행
+        // 첫 페이지 진입 로드
         window.onload = function() {
-            fetchGitHubFiles();
+            fetchDirectoryContents();
         };
     </script>
 </body>
